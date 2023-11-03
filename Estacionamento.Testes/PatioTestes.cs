@@ -55,5 +55,50 @@ namespace Estacionamento.Testes
             Assert.Equal(2, faturamento);
         }
 
+        [Theory]
+        [InlineData("André Silva", "ASD-1498", "preto", "Gol")]
+        public void LocalizaVeiculoNoPatio(string proprietario, string placa, string cor, string modelo)
+        {
+            //Arrange
+            Patio estacionamento = new Patio();
+            var veiculo = new Veiculo();
+            veiculo.Proprietario = proprietario;
+            veiculo.Placa = placa;
+            veiculo.Cor = cor;
+            veiculo.Modelo = modelo;
+            estacionamento.RegistrarEntradaVeiculo(veiculo);
+
+            //Act
+            Veiculo consultado = estacionamento.PesquisaVeiculo(placa);
+
+            //Assert
+            Assert.Equal(placa, consultado.Placa);
+        }
+
+        [Fact]
+        public void AlterarDadosVeiculo()
+        {
+            //Arrange
+            var estacionamento = new Patio();
+            var veiculo = new Veiculo();
+            veiculo.Proprietario = "João Calado";
+            veiculo.Cor = "Vermelho";
+            veiculo.Modelo = "Gol Quadrado";
+            veiculo.Placa = "bzn-2486";
+            estacionamento.RegistrarEntradaVeiculo(veiculo);
+
+            var veiculoAlterado = new Veiculo();
+            veiculoAlterado.Proprietario = "João Calado";
+            veiculoAlterado.Cor = "Preto";
+            veiculoAlterado.Modelo = "Gol Quadrado";
+            veiculoAlterado.Placa = "bzn-2486";
+
+            //Act
+            Veiculo alterado = estacionamento.AlterarDadosVeiculo(veiculoAlterado);
+
+            //Assert
+            Assert.Equal(alterado.Cor, veiculoAlterado.Cor);
+        }
+
     }
 }
