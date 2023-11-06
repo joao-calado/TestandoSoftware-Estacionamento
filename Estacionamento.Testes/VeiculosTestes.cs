@@ -1,16 +1,26 @@
 using Alura.Estacionamento.Alura.Estacionamento.Modelos;
 using Alura.Estacionamento.Modelos;
+using Xunit.Abstractions;
 
 namespace Estacionamento.Testes
 {
-    public class VeiculosTestes
+    public class VeiculosTestes : IDisposable
     {
-        [Fact(DisplayName = "Teste nº1")]
+        private Veiculo veiculo;
+        private readonly ITestOutputHelper output;
+
+        public VeiculosTestes(ITestOutputHelper output)
+        {
+            this. veiculo = new Veiculo();
+            this.output = output;
+        }
+
+        [Fact]
         [Trait("Funcionalidade", "Acelerar")]
-        public void TestaVeiculoAcelerar()
+        public void TestaVeiculoAcelerarComParametro10()
         {
             //Arrange
-            var veiculo = new Veiculo();
+            //var veiculo = new Veiculo();
             //Act
             veiculo.Acelerar(10);
             //Assert
@@ -22,7 +32,7 @@ namespace Estacionamento.Testes
         public void TestaVeiculoFrear()
         {
             //Arrange
-            var veiculo = new Veiculo();
+            //var veiculo = new Veiculo();
             //Act
             veiculo.Frear(10);
             //Assert
@@ -40,7 +50,7 @@ namespace Estacionamento.Testes
         public void TestaVeiculoClass(Veiculo modelo)
         {
             //Arrange
-            var veiculo = new Veiculo();
+            //var veiculo = new Veiculo();
 
             //Act
             veiculo.Acelerar(10);
@@ -54,19 +64,23 @@ namespace Estacionamento.Testes
         public void DadosVeiculo()
         {
             //Arrange
-            var carro = new Veiculo();
-            carro.Proprietario = "João Calado";
-            carro.Cor = "Vermelho";
-            carro.Modelo = "Gol Quadrado";
-            carro.Placa = "bzn-2486";
-            carro.Tipo = TipoVeiculo.Automovel;
+            //var veiculo = new Veiculo();
+            veiculo.Proprietario = "João Calado";
+            veiculo.Cor = "Vermelho";
+            veiculo.Modelo = "Gol Quadrado";
+            veiculo.Placa = "bzn-2486";
+            veiculo.Tipo = TipoVeiculo.Automovel;
 
             //Act
-            string dados = carro.ToString();
+            string dados = veiculo.ToString();
 
             //Assert
             Assert.Contains("Ficha do Veículo", dados);
         }
 
+        public void Dispose()
+        {
+            output.WriteLine("Limpando Setup");
+        }
     }
 }
