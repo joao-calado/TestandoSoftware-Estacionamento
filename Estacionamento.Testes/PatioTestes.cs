@@ -1,21 +1,39 @@
 ﻿using Alura.Estacionamento.Alura.Estacionamento.Modelos;
 using Alura.Estacionamento.Modelos;
+using Estacionamento.Estacionamento.Modelos;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace Estacionamento.Testes
 {
-    public class PatioTestes
+    public class PatioTestes : IDisposable
     {
+        private Veiculo _veiculo;
+        private Operador _operador;
+        private ITestOutputHelper _saidaConsoleTeste;
+
+        public PatioTestes(ITestOutputHelper SaidaConsoleTeste)
+        {
+            this._veiculo = new Veiculo();
+            this._operador = new Operador();
+            this._saidaConsoleTeste = SaidaConsoleTeste;
+            _saidaConsoleTeste.WriteLine("Construtor invocado");
+
+            _operador.Nome = "Pedro Fagundes";
+        }
+
         [Fact]
         public void ValidaFaturamento()
         {
             //Arrange
             var estacionamento = new Patio();
             var veiculo = new Veiculo();
+            estacionamento.OperadorPatio = _operador;
             veiculo.Proprietario = "João Calado";
             veiculo.Tipo = TipoVeiculo.Automovel;
             veiculo.Cor = "Vermelho";
@@ -41,6 +59,7 @@ namespace Estacionamento.Testes
             //Arrange
             Patio estacionamento = new Patio();
             var veiculo = new Veiculo();
+            estacionamento.OperadorPatio = _operador;
             veiculo.Proprietario = proprietario;
             veiculo.Placa = placa;
             veiculo.Cor = cor;
@@ -62,6 +81,7 @@ namespace Estacionamento.Testes
             //Arrange
             Patio estacionamento = new Patio();
             var veiculo = new Veiculo();
+            estacionamento.OperadorPatio = _operador;
             veiculo.Proprietario = proprietario;
             veiculo.Placa = placa;
             veiculo.Cor = cor;
@@ -81,6 +101,7 @@ namespace Estacionamento.Testes
             //Arrange
             var estacionamento = new Patio();
             var veiculo = new Veiculo();
+            estacionamento.OperadorPatio = _operador;
             veiculo.Proprietario = "João Calado";
             veiculo.Cor = "Vermelho";
             veiculo.Modelo = "Gol Quadrado";
@@ -100,5 +121,9 @@ namespace Estacionamento.Testes
             Assert.Equal(alterado.Cor, veiculoAlterado.Cor);
         }
 
+        public void Dispose()
+        {
+            _saidaConsoleTeste.WriteLine("Limpando Setup");
+        }
     }
 }
