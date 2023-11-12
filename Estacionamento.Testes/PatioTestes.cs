@@ -57,7 +57,7 @@ namespace Estacionamento.Testes
 
         [Theory]
         [InlineData("André Silva", "ASD-1498", "preto", "Gol")]
-        public void LocalizaVeiculoNoPatio(string proprietario, string placa, string cor, string modelo)
+        public void LocalizaVeiculoNoPatioPorIdTicket(string proprietario, string placa, string cor, string modelo)
         {
             //Arrange
             Patio estacionamento = new Patio();
@@ -69,10 +69,10 @@ namespace Estacionamento.Testes
             estacionamento.RegistrarEntradaVeiculo(veiculo);
 
             //Act
-            Veiculo consultado = estacionamento.PesquisaVeiculo(placa);
+            Veiculo consultado = estacionamento.PesquisaVeiculo(veiculo.IdTicket);
 
             //Assert
-            Assert.Equal(placa, consultado.Placa);
+            Assert.Contains("### Ticket Estacionamento Alura ###", consultado.Ticket);
         }
 
         [Fact]
